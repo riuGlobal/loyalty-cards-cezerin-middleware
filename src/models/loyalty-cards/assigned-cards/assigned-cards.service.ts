@@ -33,6 +33,7 @@ export class AssignedCardsService {
       .pipe(
         catchError(() => {
           console.error('======---!!!!=== ERROR')
+          throw new Error('=====');
         }),
       );
     httpRequest.subscribe({
