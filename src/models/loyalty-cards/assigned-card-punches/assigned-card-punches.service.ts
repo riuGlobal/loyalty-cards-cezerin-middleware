@@ -22,6 +22,7 @@ export class AssignedCardPunchesService {
     const httpRequest = this.httpService.post<unknown>(URL).pipe(
       catchError(() => {
         console.error('======---!!!!=== ERROR');
+        throw new Error('---test');
       }),
     );
 
