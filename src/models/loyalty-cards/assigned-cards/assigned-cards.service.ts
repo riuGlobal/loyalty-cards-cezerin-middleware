@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { AssignedCard } from '../interfaces/assigned-cards.interface';
 import { ConfigService } from '@nestjs/config';
 import { AxiosResponse } from 'axios';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 @Injectable()
 export class AssignedCardsService {
@@ -31,21 +31,21 @@ export class AssignedCardsService {
     const httpRequest = this.httpService
       .get<AssignedCard[]>(URL, { params })
       .pipe(
-        catchError(() => {
-          console.error('======---!!!!=== ERROR')
-          throw new Error('=====');
+        tap({
+          next(axiosResponse) {
+            console.log(` --- Log
+            statuscode: ${axiosResponse.status}
+            resposeBody: ${JSON.stringify(axiosResponse.data)}
+            requestBody: null
+            url: ${URL}
+            `);
+          },
+        }),
+        catchError((error) => {
+          console.error('======---!!!!=== ERROR', error);
+          throw new Error('====Error wehn GET cards=');
         }),
       );
-    httpRequest.subscribe({
-      next(axiosResponse) {
-        console.log(` --- Log
-        statuscode: ${axiosResponse.status}
-        resposeBody: ${JSON.stringify(axiosResponse.data)}
-        requestBody: null
-        url: ${URL}
-        `);
-      },
-    });
 
     return httpRequest;
   }

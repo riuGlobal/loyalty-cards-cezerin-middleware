@@ -2,7 +2,7 @@ import { HttpService, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 @Injectable()
 export class AssignedCardPunchesService {
   constructor(
@@ -20,22 +20,22 @@ export class AssignedCardPunchesService {
   create(assignedCardId: number): Observable<AxiosResponse<unknown>> {
     const URL = `${this.LOYALTY_CARDS_HOST}${this.getSlug(assignedCardId)}`;
     const httpRequest = this.httpService.post<unknown>(URL).pipe(
-      catchError(() => {
-        console.error('======---!!!!=== ERROR');
-        throw new Error('---test');
+      tap({
+        next(axiosResponse) {
+          console.log(` --- Log
+          statuscode: ${axiosResponse.status}
+          resposeBody: ${JSON.stringify(axiosResponse.data)}
+          requestBody: null
+          url: ${URL}
+          `);
+        },
+      }),
+      catchError((error) => {
+        console.error('======---!!!!=== ERROR', error);
+        throw new Error('---Error when puncing cards');
       }),
     );
 
-    httpRequest.subscribe({
-      next(axiosResponse) {
-        console.log(` --- Log
-        statuscode: ${axiosResponse.status}
-        resposeBody: ${JSON.stringify(axiosResponse.data)}
-        requestBody: null
-        url: ${URL}
-        `);
-      },
-    });
     return httpRequest;
   }
 }
