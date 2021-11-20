@@ -1,4 +1,4 @@
 export class CreatePunchersPurchasePunchRequestDto {
   id: string;
-  customerId: string;
+  customer_id: string;
 }

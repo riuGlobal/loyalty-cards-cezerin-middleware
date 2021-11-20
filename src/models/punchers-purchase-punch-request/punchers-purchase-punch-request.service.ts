@@ -25,7 +25,7 @@ export class PunchersPurchasePunchRequestService {
       '--- Log request body received:',
       createPunchersPurchasePunchRequestDto,
     );
-    const { id: orderId, customerId: userId } =
+    const { id: orderId, customer_id: userId } =
       createPunchersPurchasePunchRequestDto;
 
     const punchRequest = await this.punchRequestRepository.save({
