@@ -35,9 +35,10 @@ export class AssignedCardsService {
           next(axiosResponse) {
             console.log(` --- Log
             statuscode: ${axiosResponse.status}
-            resposeBody: ${JSON.stringify(axiosResponse.data)}
+            responseBody: ${JSON.stringify(axiosResponse.data)}
             requestBody: null
             url: ${URL}
+            params: ${JSON.stringify(params)}
             `);
           },
         }),
