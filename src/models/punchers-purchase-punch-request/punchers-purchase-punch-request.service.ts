@@ -21,6 +21,10 @@ export class PunchersPurchasePunchRequestService {
   async create(
     createPunchersPurchasePunchRequestDto: CreatePunchersPurchasePunchRequestDto,
   ) {
+    console.log(
+      '--- Log request body received:',
+      createPunchersPurchasePunchRequestDto,
+    );
     const { id: orderId, customerId: userId } =
       createPunchersPurchasePunchRequestDto;
 
